@@ -1,112 +1,174 @@
-import { useState } from 'react'
-import { Routes, Route, Link, useLocation } from 'react-router-dom'
-import { AnimatePresence, motion } from 'framer-motion'
-import Home from './pages/Home'
-import Search from './pages/Search'
-import Profile from './pages/Profile'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './index.css'
+import React, { useState } from 'react'
+import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
-  const location = useLocation()
+interface Destination {
+  city: string
+  description: string
+  price: number
+  rating: number
+}
 
-  // Animation variants for page transitions
-  const pageVariants = {
-    initial: { opacity: 0, x: -50 },
-    in: { opacity: 1, x: 0 },
-    out: { opacity: 0, x: 50 },
+const popularDestinations: Destination[] = [
+  {
+    city: 'Paris, France',
+    description: 'City of lights and romance',
+    price: 85,
+    rating: 4.8,
+  },
+  {
+    city: 'Tokyo, Japan',
+    description: 'Modern metropolis meets tradition',
+    price: 95,
+    rating: 4.8,
+  },
+  {
+    city: 'Bali, Indonesia',
+    description: 'Tropical paradise and culture',
+    price: 45,
+    rating: 4.8,
+  },
+]
+
+const App: React.FC = () => {
+  const [showSignIn, setShowSignIn] = useState(false)
+  const [showRegister, setShowRegister] = useState(false)
+
+  // Simple handlers to toggle forms
+  const openSignIn = () => {
+    setShowSignIn(true)
+    setShowRegister(false)
+  }
+  const openRegister = () => {
+    setShowRegister(true)
+    setShowSignIn(false)
+  }
+  const closeForms = () => {
+    setShowRegister(false)
+    setShowSignIn(false)
   }
 
-  const pageTransition = {
-    type: 'tween',
-    ease: 'anticipate',
-    duration: 0.5,
+  // Simple form submit handlers (can be replaced with real auth logic)
+  const handleSignInSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    alert('Sign In submitted')
+    closeForms()
+  }
+  const handleRegisterSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    alert('Registration submitted')
+    closeForms()
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 flex flex-col items-center p-6 gap-6">
-      <div className="flex gap-8">
-        <a href="https://vite.dev" target="_blank" rel="noreferrer">
-          <img src={viteLogo} className="h-20 w-20" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="h-20 w-20" alt="React logo" />
-        </a>
-      </div>
+    <div className="app">
+      <header className="header">
+        <div className="logo">TravelMate</div>
+        <div>
+          <button className="sign-in-btn" onClick={openSignIn}>Sign In</button>
+          <button className="register-btn" onClick={openRegister}>Register</button>
+        </div>
+      </header>
 
-      <nav className="flex gap-4 text-lg font-medium">
-        <Link to="/" className="hover:underline">
-          Home
-        </Link>
-        <Link to="/search" className="hover:underline">
-          Search
-        </Link>
-        <Link to="/profile" className="hover:underline">
-          Profile
-        </Link>
-      </nav>
+      {/* Conditional rendering of forms */}
+      {showSignIn && (
+        <div className="form-overlay">
+          <div className="form-container">
+            <button className="close-btn" onClick={closeForms}>×</button>
+            <h2>Sign In</h2>
+            <form onSubmit={handleSignInSubmit}>
+              <label>
+                Username:
+                <input type="text" name="username" required />
+              </label>
+              <label>
+                Password:
+                <input type="password" name="password" required />
+              </label>
+              <button type="submit" className="primary-btn">Sign In</button>
+            </form>
+          </div>
+        </div>
+      )}
 
-      {/* AnimatePresence enables exit animations on route change */}
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          <Route
-            path="/"
-            element={
-              <motion.div
-                initial="initial"
-                animate="in"
-                exit="out"
-                variants={pageVariants}
-                transition={pageTransition}
-                className="w-full"
-              >
-                <Home />
-              </motion.div>
-            }
-          />
-          <Route
-            path="/search"
-            element={
-              <motion.div
-                initial="initial"
-                animate="in"
-                exit="out"
-                variants={pageVariants}
-                transition={pageTransition}
-                className="w-full"
-              >
-                <Search />
-              </motion.div>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <motion.div
-                initial="initial"
-                animate="in"
-                exit="out"
-                variants={pageVariants}
-                transition={pageTransition}
-                className="w-full"
-              >
-                <Profile />
-              </motion.div>
-            }
-          />
-        </Routes>
-      </AnimatePresence>
+      {showRegister && (
+        <div className="form-overlay">
+          <div className="form-container">
+            <button className="close-btn" onClick={closeForms}>×</button>
+            <h2>Register</h2>
+            <form onSubmit={handleRegisterSubmit}>
+              <label>
+                Username:
+                <input type="text" name="username" required />
+              </label>
+              <label>
+                Email:
+                <input type="email" name="email" required />
+              </label>
+              <label>
+                Password:
+                <input type="password" name="password" required />
+              </label>
+              <button type="submit" className="primary-btn">Register</button>
+            </form>
+          </div>
+        </div>
+      )}
 
-      <div>
-        <button
-          className="mt-6 px-6 py-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          count is {count}
-        </button>
-      </div>
+      {/* Keep your existing sections below */}
+
+      <section className="hero">
+        <h1>Discover Your Next Adventure</h1>
+        <p>Plan, budget, and explore amazing destinations with our comprehensive travel companion</p>
+        <div className="hero-buttons">
+          <button className="primary-btn">Start Planning</button>
+          <button className="secondary-btn">Learn More</button>
+        </div>
+      </section>
+
+      <section className="features">
+        <h2>All Your Travel Tools in One Place</h2>
+        <p>Everything you need to plan and enjoy your perfect trip</p>
+        <div className="feature-cards">
+          <div className="card">
+            <h3>Budget Calculator</h3>
+            <p>Get low and high estimates for your trip expenses</p>
+          </div>
+          <div className="card">
+            <h3>Currency Converter</h3>
+            <p>Convert currencies with real-time exchange rates</p>
+          </div>
+          <div className="card">
+            <h3>Local Services</h3>
+            <p>Find ATMs, restaurants, and transportation options</p>
+          </div>
+          <div className="card">
+            <h3>Trip Planning</h3>
+            <p>Organize itineraries and track your adventures</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="popular-destinations">
+        <h2>Popular Destinations</h2>
+        <div className="destination-cards">
+          {popularDestinations.map(({ city, description, price, rating }) => (
+            <div key={city} className="destination-card">
+              <div className="destination-city">{city}</div>
+              <div className="destination-description">{description}</div>
+              <div className="destination-price">From ${price}/day</div>
+              <div className="destination-rating">⭐ {rating}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <footer className="footer">
+        <p>
+          TravelMate<br />
+          Your ultimate travel companion for discovering amazing destinations around the world.
+        </p>
+        <p>© 2024 TravelMate. All rights reserved. Making travel planning simple and enjoyable.</p>
+      </footer>
     </div>
   )
 }
