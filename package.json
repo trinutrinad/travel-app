@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "server",
   "version": "1.0.0",
   "type": "module",
@@ -22,5 +23,12 @@
     "ts-node": "^10.9.2",
     "tsx": "^3.12.7",
     "typescript": "^5.8.3"
+=======
+  "dependencies": {
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.4",
+    "react-router-dom": "^7.6.1",
+    "tailwindcss": "^4.1.8"
+>>>>>>> 8af139a1be957eda0ba894148d5a4c8e743b8c18
   }
 }
